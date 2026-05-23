@@ -1,0 +1,11 @@
+const router = require('express').Router();
+const { getAllListings, getListing, createListing, updateListing, deleteListing, uploadImages } = require('../controllers/listingController');
+const { protect, hostOnly } = require('../middleware/auth');
+const { upload } = require('../middleware/cloudinary');
+router.get('/', getAllListings);
+router.get('/:id', getListing);
+router.post('/', protect, hostOnly, createListing);
+router.put('/:id', protect, hostOnly, updateListing);
+router.delete('/:id', protect, hostOnly, deleteListing);
+router.post('/upload', protect, upload.array('images', 10), uploadImages);
+module.exports = router;
