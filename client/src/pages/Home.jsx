@@ -41,49 +41,44 @@ function ListingCard({ property, index }) {
       className="group cursor-pointer"
       style={{ animationDelay: `${index * 60}ms`, animation: 'fadeSlideUp 0.5s ease forwards', opacity: 0 }}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => { setHovered(false); }}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Image */}
-      <div className="relative rounded-2xl overflow-hidden aspect-square bg-gray-100">
+      <div className="relative rounded-xl md:rounded-2xl overflow-hidden aspect-square bg-gray-100">
         <img
           src={images[imgIdx]}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           onError={e => e.target.src = 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600'}
         />
-
         {/* Guest favourite badge */}
         {isGuestFav && (
-          <div className="absolute top-3 left-3 bg-white text-gray-800 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+          <div className="absolute top-2 left-2 bg-white text-gray-800 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow-md">
             Guest favourite
           </div>
         )}
-
         {/* Heart */}
         <button
           onClick={(e) => { e.preventDefault(); setLiked(!liked); }}
-          className="absolute top-3 right-3 transition-transform hover:scale-110 active:scale-90"
+          className="absolute top-2 right-2 transition-transform hover:scale-110 active:scale-90"
         >
-          <FiHeart className={`w-5 h-5 transition-all duration-200 drop-shadow-lg ${liked ? 'fill-airbnb text-airbnb scale-110' : 'text-white fill-black/20'}`} />
+          <FiHeart className={`w-4 h-4 md:w-5 md:h-5 transition-all duration-200 drop-shadow-lg ${liked ? 'fill-airbnb text-airbnb' : 'text-white fill-black/20'}`} />
         </button>
-
-        {/* Image navigation dots */}
+        {/* Image nav arrows - desktop only */}
         {images.length > 1 && (
           <>
-            <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1 transition-opacity duration-200 ${hovered ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`absolute bottom-2 left-1/2 -translate-x-1/2 hidden md:flex gap-1 transition-opacity duration-200 ${hovered ? 'opacity-100' : 'opacity-0'}`}>
               {images.slice(0, 5).map((_, i) => (
                 <button key={i} onClick={e => { e.preventDefault(); setImgIdx(i); }}
                   className={`w-1.5 h-1.5 rounded-full transition-all ${i === imgIdx ? 'bg-white scale-125' : 'bg-white/60'}`} />
               ))}
             </div>
-            <button
-              onClick={e => { e.preventDefault(); setImgIdx(Math.max(0, imgIdx - 1)); }}
-              className={`absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md transition-all duration-200 ${hovered && imgIdx > 0 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`}>
+            <button onClick={e => { e.preventDefault(); setImgIdx(Math.max(0, imgIdx - 1)); }}
+              className={`absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md transition-all duration-200 hidden md:flex ${hovered && imgIdx > 0 ? 'opacity-100' : 'opacity-0'}`}>
               <FiChevronLeft size={14} />
             </button>
-            <button
-              onClick={e => { e.preventDefault(); setImgIdx(Math.min(images.length - 1, imgIdx + 1)); }}
-              className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md transition-all duration-200 ${hovered && imgIdx < images.length - 1 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'}`}>
+            <button onClick={e => { e.preventDefault(); setImgIdx(Math.min(images.length - 1, imgIdx + 1)); }}
+              className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md transition-all duration-200 hidden md:flex ${hovered && imgIdx < images.length - 1 ? 'opacity-100' : 'opacity-0'}`}>
               <FiChevronRight size={14} />
             </button>
           </>
@@ -91,27 +86,27 @@ function ListingCard({ property, index }) {
       </div>
 
       {/* Info */}
-      <a href={property.url || property.deeplink} target="_blank" rel="noreferrer" className="block mt-3">
-        <div className="flex justify-between items-start gap-2">
-          <h3 className="font-semibold text-gray-900 text-sm leading-snug line-clamp-1">{name}</h3>
+      <a href={property.url || property.deeplink} target="_blank" rel="noreferrer" className="block mt-2 md:mt-3">
+        <div className="flex justify-between items-start gap-1">
+          <h3 className="font-semibold text-gray-900 text-xs md:text-sm leading-snug line-clamp-1">{name}</h3>
           {rating > 0 && (
             <div className="flex items-center gap-0.5 shrink-0">
-              <FiStar className="fill-gray-900 text-gray-900" size={11} />
-              <span className="text-sm text-gray-900">{Number(rating).toFixed(2)}</span>
+              <FiStar className="fill-gray-900 text-gray-900" size={10} />
+              <span className="text-xs text-gray-900">{Number(rating).toFixed(2)}</span>
             </div>
           )}
         </div>
-        <p className="text-gray-500 text-sm mt-0.5">{type}</p>
-        <p className="text-gray-500 text-sm">
-          {[bedrooms && `${bedrooms} bedroom${bedrooms > 1 ? 's' : ''}`,
+        <p className="text-gray-500 text-xs mt-0.5">{type}</p>
+        <p className="text-gray-500 text-xs hidden md:block">
+          {[bedrooms && `${bedrooms} bed${bedrooms > 1 ? 's' : ''}`,
             beds && `${beds} bed${beds > 1 ? 's' : ''}`,
             bathrooms && `${bathrooms} bath`
           ].filter(Boolean).join(' · ')}
         </p>
-        <p className="mt-1.5 text-sm">
+        <p className="mt-1 text-xs md:text-sm">
           {price
             ? <><span className="font-semibold text-gray-900">${typeof price === 'object' ? price.amount || price : price}</span><span className="text-gray-500"> night</span></>
-            : <span className="font-semibold text-gray-900 underline">View on Airbnb</span>
+            : <span className="font-semibold text-gray-900 underline text-xs">View on Airbnb</span>
           }
         </p>
       </a>
@@ -217,18 +212,18 @@ export default function Home({ externalSearch }) {
 
         {/* Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {[...Array(12)].map((_, i) => (
               <div key={i}>
-                <div className="shimmer rounded-2xl aspect-square mb-3"></div>
-                <div className="shimmer h-4 rounded-full mb-2 w-3/4"></div>
-                <div className="shimmer h-3 rounded-full mb-1.5 w-1/2"></div>
-                <div className="shimmer h-3 rounded-full w-1/3"></div>
+                <div className="shimmer rounded-xl md:rounded-2xl aspect-square mb-2 md:mb-3"></div>
+                <div className="shimmer h-3 md:h-4 rounded-full mb-1.5 md:mb-2 w-3/4"></div>
+                <div className="shimmer h-2.5 md:h-3 rounded-full mb-1 md:mb-1.5 w-1/2"></div>
+                <div className="shimmer h-2.5 md:h-3 rounded-full w-1/3"></div>
               </div>
             ))}
           </div>
         ) : listings.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {listings.map((listing, i) => (
               <ListingCard key={listing.id || i} property={listing} index={i} />
             ))}

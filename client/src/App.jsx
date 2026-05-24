@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { useState } from 'react';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
+import BottomNav from './components/common/BottomNav';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -43,7 +44,7 @@ function AppRoutes() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar onSearch={handleNavSearch} />
-      <main className="flex-1">
+      <main className="flex-1 pb-16 md:pb-0">
         <Routes>
           <Route path="/" element={<Home externalSearch={homeSearch} />} />
           <Route path="/login" element={<Login />} />
@@ -58,6 +59,7 @@ function AppRoutes() {
         </Routes>
       </main>
       <Footer />
+      <BottomNav />
     </div>
   );
 }
