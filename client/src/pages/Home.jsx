@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { FiStar, FiHeart, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const categories = [
@@ -137,11 +137,11 @@ export default function Home({ externalSearch }) {
     setLoading(true);
     setListings([]);
     try {
-      const res = await axios.get(`/api/search?location=${encodeURIComponent(loc)}`);
+      const res = await api.get(`/search?location=${encodeURIComponent(loc)}`);
       const items = res.data?.results || [];
       setListings(items.slice(0, 20));
     } catch (err) {
-      console.error(err);
+      console.error('fetch error:', err);
     } finally {
       setLoading(false);
     }
