@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://airbnb-8vxd.onrender.com/api',
 });
 
 api.interceptors.request.use((config) => {
